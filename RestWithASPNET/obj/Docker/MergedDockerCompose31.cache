@@ -1,0 +1,42 @@
+networks:
+  api-network:
+    driver: bridge
+services:
+  db:
+    build:
+      context: D:\WorkSpace\RestWithAsp\RestWithAsp\RestWithASPNET
+      dockerfile: db/Dockerfile
+    command: --innodb-flush-method=O_DSYNC --innodb-use-native-aio=0 --log_bin=ON
+    environment:
+      MYSQL_DATABASE: rest_with_asp_net
+      MYSQL_PASSWORD: qwerty
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: qwerty
+      MYSQL_USER: wp
+      TZ: America/Sao_Paulo
+    image: rest-with-asp-net-db
+    networks:
+      api-network: null
+    ports:
+    - published: 3308
+      target: 3306
+    restart: always
+    volumes:
+    - D:\WorkSpace\RestWithAsp\RestWithAsp\RestWithASPNET\db:/var/lib/mysql:rw
+  rest-with-asp-net:
+    build:
+      context: D:\WorkSpace\RestWithAsp\RestWithAsp\RestWithASPNET
+      dockerfile: RestWithASPNET/Dockerfile
+    depends_on:
+      db:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      TZ: America/Sao_Paulo
+    image: rest-with-asp-net
+    networks:
+      api-network: null
+    ports:
+    - published: 44300
+      target: 80
+version: '3.4'

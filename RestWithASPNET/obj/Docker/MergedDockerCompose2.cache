@@ -1,0 +1,7 @@
+services:
+  restwithaspnet:
+    build:
+      context: D:\WorkSpace\RestWithAsp\RestWithAsp\RestWithASPNET
+      dockerfile: RestWithASPNET/Dockerfile
+    image: restwithaspnet
+version: '3.4'

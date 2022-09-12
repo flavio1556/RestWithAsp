@@ -1,0 +1,64 @@
+networks:
+  api-network:
+    driver: bridge
+services:
+  db:
+    build:
+      context: D:\WorkSpace\RestWithAsp\RestWithAsp\RestWithASPNET
+      dockerfile: db/Dockerfile
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: rest_with_asp_net
+      MYSQL_PASSWORD: docker
+      MYSQL_ROOT_PASSWORD: docker1
+      MYSQL_USER: docker
+      TZ: America/Sao_Paulo
+    image: rest-with-asp-net-db
+    networks:
+      api-network: {}
+    ports:
+    - published: 3308
+      target: 3306
+    restart: always
+  rest-with-asp-net-udemy:
+    build:
+      context: D:\WorkSpace\RestWithAsp\RestWithAsp\RestWithASPNET
+      dockerfile: RestWithASPNET/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: RestWithASPNET
+      target: base
+    container_name: RestWithASPNET
+    depends_on:
+      db:
+        condition: service_started
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+      TZ: America/Sao_Paulo
+    image: rest-with-asp-net:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "/app/bin/Debug/net5.0/RestWithASPNET.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    networks:
+      api-network: {}
+    ports:
+    - published: 44300
+      target: 80
+    tty: true
+    volumes:
+    - D:\WorkSpace\RestWithAsp\RestWithAsp\RestWithASPNET\RestWithASPNET:/app:rw
+    - C:\Users\kinkar\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\kinkar\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\kinkar\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages:/root/.nuget/fallbackpackages:ro
+    - C:\Users\kinkar\.nuget\packages:/root/.nuget/packages:ro
+    - D:\WorkSpace\RestWithAsp\RestWithAsp\RestWithASPNET:/src:rw
+version: '3.4'

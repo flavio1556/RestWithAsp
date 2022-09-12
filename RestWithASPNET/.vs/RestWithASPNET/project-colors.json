@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "5c430450-e4fa-4e7f-a37d-d9d1cacce7ce": {
+      "ProjectGuid": "5c430450-e4fa-4e7f-a37d-d9d1cacce7ce",
+      "DisplayName": "RestWithASPNET",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    },
+    "d4a55f95-94a4-4263-9716-cb466d6aacae": {
+      "ProjectGuid": "d4a55f95-94a4-4263-9716-cb466d6aacae",
+      "DisplayName": "docker-compose",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}

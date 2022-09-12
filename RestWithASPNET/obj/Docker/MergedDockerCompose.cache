@@ -1,0 +1,15 @@
+services:
+  restwithaspnet:
+    build:
+      context: D:\WorkSpace\RestWithAsp\RestWithAsp\RestWithASPNET
+      dockerfile: RestWithASPNET/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: restwithaspnet
+    ports:
+    - target: 80
+    - target: 443
+    volumes:
+    - C:\Users\kinkar\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+version: '3.4'
