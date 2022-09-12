@@ -1,0 +1,24 @@
+sudo: required
+dist: bionic
+language: csharp
+mono: none
+dotnet: 5.0
+service: docker
+before_install:
+  - RestWithASPNET/
+  - echo "we are in the right folder!"
+script:
+  - docker-compose build
+before_deploy:
+  - echo "$DOCKER_PASSWORD" | docker login -- username "$DOCKER_USERNAME" --password-stdin
+deploy:
+  provider: script
+  script:
+    docker tag rest-with-asp-net-db:$Travis_JOB_ID $DOCKER_USERNAME/rest-with-asp-net-db:$Travis_JOB_ID
+    docker tag rest-with-asp-net:$Travis_JOB_ID $DOCKER_USERNAME/rest-with-asp-net:$Travis_JOB_ID
+    docker push $DOCKER_USERNAME/rest-with-asp-net-db:$Travis_JOB_ID
+    docker push $DOCKER_USERNAME/rest-with-asp-net:$Travis_JOB_ID
+  on: 
+    branch: main
+notifications:
+  email: false
