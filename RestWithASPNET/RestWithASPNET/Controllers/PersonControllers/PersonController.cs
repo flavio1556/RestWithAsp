@@ -12,6 +12,7 @@ using RestWithASPNET.Models.Entites;
 using RestWithASPNET.Data.VO;
 using RestWithASPNET.HyperMedia.Filters;
 using Microsoft.AspNetCore.Authorization;
+using RestWithASPNET.HyperMedia.Utils;
 
 namespace RestWithASPNET.Controllers.PersonControllers
 {
@@ -55,7 +56,7 @@ namespace RestWithASPNET.Controllers.PersonControllers
         }  
 
         [HttpGet("{sortDirection}/{pageSize}/{page}")]
-        [ProducesResponseType((200), Type = typeof(List<PersonVO>))]
+        [ProducesResponseType((200), Type = typeof(List<PagedSarchVO<PersonVO>>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [TypeFilter(typeof(HyperMediaFilter))]

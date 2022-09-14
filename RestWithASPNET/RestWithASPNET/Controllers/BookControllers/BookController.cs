@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestWithASPNET.Business.Interfaces;
 using RestWithASPNET.Data.VO;
 using RestWithASPNET.HyperMedia.Filters;
+using RestWithASPNET.HyperMedia.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,36 +31,39 @@ namespace RestWithASPNET.Controllers.BookControllers
         {
             try
             {
-                if(id == 0) return BadRequest("input invalid");
+                if (id == 0) return BadRequest("input invalid");
 
                 var result = _bookBusiness.FindById(id);
 
-                if(result == null) return NotFound();
+                if (result == null) return NotFound();
 
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        [HttpGet]
-        [ProducesResponseType((200), Type = typeof(List<BookVO>))]
+        [HttpGet("{sortDirection}/{pageSize}/{page}")]
+        [ProducesResponseType((200), Type = typeof(List<PagedSarchVO<BookVO>>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] string title,
+            string sortDirection,
+            int pageSize,
+            int page
+            )
         {
             try
             {
-                var result = _bookBusiness.FindAll();
-
-                if(!result.Any()) return NotFound();
+                var result = _bookBusiness.FindWithPagedSarch(title, sortDirection, pageSize, page);
 
                 return Ok(result);
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -74,7 +78,7 @@ namespace RestWithASPNET.Controllers.BookControllers
         {
             try
             {
-                if(book == null) return BadRequest("invalid input");
+                if (book == null) return BadRequest("invalid input");
                 return Ok(_bookBusiness.Create(book));
             }
             catch (Exception ex)
@@ -120,6 +124,6 @@ namespace RestWithASPNET.Controllers.BookControllers
                 throw new Exception(ex.Message);
             }
         }
-        
+
     }
 }

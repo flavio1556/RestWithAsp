@@ -55,7 +55,7 @@ namespace RestWithASPNET.Business.Implementations
 
         public TokenVO ValidateCredentials(TokenVO token)
         {
-            var acessToken = token.AccesToken;
+            var acessToken = token.AccessToken;
             var refreshToken = token.RefreshToken;
             var principal = _tokenService.GetPrincipalFromExpiredToken(acessToken);
             var username = principal.Identity.Name;

@@ -18,7 +18,7 @@ namespace RestWithASPNET.Repository.User
         public Models.Entites.User ValidateCredentials(UserVO user)
         {
 
-            var pass = ComputeHash(user.Passsword, new SHA256CryptoServiceProvider());
+            var pass = ComputeHash(user.Password, new SHA256CryptoServiceProvider());
             return _context.Users.FirstOrDefault(u => (u.UserName == user.UserName) && (u.PassWord == pass));
         }
 

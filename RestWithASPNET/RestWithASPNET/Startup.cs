@@ -89,11 +89,11 @@ namespace RestWithASPNET
             //configuração ambiente
             var conection = Configuration.GetConnectionString("MySQLConnection");
             services.AddDbContext<MySQLContext>(options => options.UseMySql(conection));
-            
-            //if (Environment.IsDevelopment())
-            //{
-            //    MigrateDatabase(conection);
-            //}
+
+            if (Environment.IsDevelopment())
+            {
+                MigrateDatabase(conection);
+            }
             services.AddMvc(options =>
             {
                 options.RespectBrowserAcceptHeader = true;
